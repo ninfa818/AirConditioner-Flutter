@@ -10,6 +10,7 @@ class Assets {
   static const String fontsMontserrat-Regular = 'assets/fonts/Montserrat-Regular.ttf';
   static const String fontsMontserrat-SemiBold = 'assets/fonts/Montserrat-SemiBold.ttf';
   static const String iconsIcon = 'assets/icons/icon.svg';
+  static const String imagesImgAdv = 'assets/images/img_adv.png';
   static const String imagesLogo = 'assets/images/logo.png';
 
 }

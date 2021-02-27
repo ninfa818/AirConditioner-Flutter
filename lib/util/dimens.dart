@@ -13,7 +13,8 @@ class Dimension {
   Dimension(this.screenSize);
 
   double widthSm = 420;
-  double widthMd = 800;
+  double widthBs = 640;
+  double widthMd = 768;
   double widthLg = 1024;
 
   double wp(percentage) {
@@ -33,8 +34,10 @@ class Dimension {
       return value * 1.5;
     } else if (screenSize.width > widthMd) {
       return value * 1.35;
-    } else if (screenSize.width > widthSm) {
+    } else if (screenSize.width > widthBs) {
       return value * 1.2;
+    } else if (screenSize.width > widthSm) {
+      return value * 1.1;
     } else {
       return value;
     }
@@ -42,8 +45,10 @@ class Dimension {
 
   int getStatus() {
     if (screenSize.width > widthLg) {
-      return 3;
+      return 4;
     } else if (screenSize.width > widthMd) {
+      return 3;
+    } else if (screenSize.width > widthBs) {
       return 2;
     } else if (screenSize.width > widthSm) {
       return 1;
