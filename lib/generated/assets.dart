@@ -9,6 +9,12 @@ class Assets {
   static const String fontsMontserrat-Medium = 'assets/fonts/Montserrat-Medium.ttf';
   static const String fontsMontserrat-Regular = 'assets/fonts/Montserrat-Regular.ttf';
   static const String fontsMontserrat-SemiBold = 'assets/fonts/Montserrat-SemiBold.ttf';
+  static const String iconsIcAndroid = 'assets/icons/ic_android.svg';
+  static const String iconsIcApple = 'assets/icons/ic_apple.svg';
+  static const String iconsIcFacebook = 'assets/icons/ic_facebook.svg';
+  static const String iconsIcInstagram = 'assets/icons/ic_instagram.svg';
+  static const String iconsIcTwitter = 'assets/icons/ic_twitter.svg';
+  static const String iconsIcWechat = 'assets/icons/ic_wechat.svg';
   static const String iconsIcon = 'assets/icons/icon.svg';
   static const String imagesImgAdv = 'assets/images/img_adv.png';
   static const String imagesLogo = 'assets/images/logo.png';
