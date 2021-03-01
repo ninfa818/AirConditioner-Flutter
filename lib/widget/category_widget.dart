@@ -97,3 +97,67 @@ class _ClientCategoryWidgetState extends State<ClientCategoryWidget> {
     );
   }
 }
+
+class CategoryCellWidget extends StatefulWidget {
+  final Dimension dimension;
+  final String title;
+  final Color color;
+  final double fontSize;
+
+  const CategoryCellWidget({
+    Key key,
+    @required this.dimension,
+    @required this.title,
+    this.color = Colors.black,
+    this.fontSize = 12.0,
+  }) : super(key: key);
+
+  @override
+  _CategoryCellWidgetState createState() => _CategoryCellWidgetState();
+}
+
+class _CategoryCellWidgetState extends State<CategoryCellWidget> {
+  var isHover = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    isHover = false;
+  }
+
+  void _onExit(PointerEvent details) {
+    setState(() {
+      isHover = false;
+    });
+  }
+
+  void _onEnter(PointerEvent details) {
+    setState(() {
+      isHover = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: _onEnter,
+      onExit: _onExit,
+      child: Container(
+        margin: EdgeInsets.all(offsetXSm),
+        padding: EdgeInsets.symmetric(horizontal: offsetSm, vertical: offsetXSm),
+        decoration: BoxDecoration(
+          color: isHover? widget.color : Colors.white,
+          border: Border.all(color: widget.color),
+          borderRadius: BorderRadius.all(Radius.circular(offsetSm)),
+        ),
+        child: Text(widget.title,
+          style: mediumTextStyle.copyWith(
+              fontSize: widget.dimension.sValue(widget.fontSize),
+              color: isHover? Colors.white : widget.color
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,8 +1,11 @@
+import 'package:aircondition/model/router_model.dart';
 import 'package:aircondition/util/colors.dart';
+import 'package:aircondition/util/constants.dart';
 import 'package:aircondition/widget/category_widget.dart';
-import 'package:aircondition/widget/menu_title_widget.dart';
+import 'package:aircondition/widget/icon_widget.dart';
 import 'package:aircondition/util/dimens.dart';
 import 'package:aircondition/util/themes.dart';
+import 'package:aircondition/widget/menu_widget.dart';
 import 'package:aircondition/widget/text_widget.dart';
 import 'package:aircondition/widget/textfield_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,12 +22,39 @@ class _LandingScreenState extends State<LandingScreen> {
   var isTalentHover;
   var searchController = TextEditingController();
 
+  var isMenu = false;
+
+  var followIcons = [
+    'assets/icons/ic_wechat.svg',
+    'assets/icons/ic_facebook.svg',
+    'assets/icons/ic_twitter.svg',
+    'assets/icons/ic_instagram.svg',
+  ];
+
+  var platformIcons = [
+    'assets/icons/ic_apple.svg',
+    'assets/icons/ic_android.svg',
+  ];
 
   @override
   void initState() {
     super.initState();
 
     isTalentHover = false;
+  }
+
+  void _onClickMenu() {
+    setState(() {
+      isMenu = !isMenu;
+    });
+  }
+
+  void _onClickWidget(String value) {
+    if (value == routerPrivacyPolicy.routerName) {
+      Navigator.pushNamed(context, value);
+    } else {
+      Navigator.pushReplacementNamed(context, value);
+    }
   }
 
   @override
@@ -52,62 +82,87 @@ class _LandingScreenState extends State<LandingScreen> {
                     child: menuBarWidget(dimension)
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: dimension.sValue(offsetBase),),
-                        dimension.getStatus() > 1
-                            ? advertiseWidgetLg(dimension)
-                            : advertiseWidgetSm(dimension),
-                        SizedBox(height: dimension.sValue(offsetXLg),),
-                        clientSupportWidget(dimension),
-                        SizedBox(height: dimension.sValue(offsetBase),),
-                        dimension.getStatus() > 1
-                            ? clientCategoryLg(dimension)
-                            : clientCategorySm(dimension),
-                        SizedBox(height: dimension.sValue(offsetBase),),
-                        dimension.getStatus() > 1
-                            ? Row(
+                  child: Stack(
+                    children: [
+                      if (!isMenu) SingleChildScrollView(
+                        child: Column(
                           children: [
-                            Spacer(),
-                            Text('Need a solution for large organizations? ', style: extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),),
-                            UnderLineHoverText(
-                              dimension: dimension,
-                              title: 'Enterprise Suite has you covered.',
-                              onClick: () {
+                            SizedBox(height: dimension.sValue(offsetBase),),
+                            dimension.getStatus() > 1
+                                ? advertiseWidgetLg(dimension)
+                                : advertiseWidgetSm(dimension),
+                            SizedBox(height: dimension.sValue(offsetXLg),),
+                            clientSupportWidget(dimension),
+                            SizedBox(height: dimension.sValue(offsetBase),),
+                            dimension.getStatus() > 1
+                                ? clientCategoryLg(dimension)
+                                : clientCategorySm(dimension),
+                            SizedBox(height: dimension.sValue(offsetBase),),
+                            dimension.getStatus() > 1
+                                ? Row(
+                              children: [
+                                Spacer(),
+                                Text('Need a solution for large organizations? ', style: extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),),
+                                UnderLineHoverText(
+                                  dimension: dimension,
+                                  title: 'Enterprise Suite has you covered.',
+                                  onClick: () {
 
-                              },
+                                  },
+                                ),
+                                Spacer(),
+                              ],
+                            )
+                                : Column(
+                              children: [
+                                Text('Need a solution for large organizations? ', style: extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),),
+                                SizedBox(height: offsetSm,),
+                                UnderLineHoverText(
+                                  dimension: dimension,
+                                  title: 'Enterprise Suite has you covered.',
+                                  onClick: () {
+
+                                  },
+                                ),
+                              ],
                             ),
-                            Spacer(),
-                          ],
-                        )
-                            : Column(
-                          children: [
-                            Text('Need a solution for large organizations? ', style: extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),),
-                            SizedBox(height: offsetSm,),
-                            UnderLineHoverText(
-                              dimension: dimension,
-                              title: 'Enterprise Suite has you covered.',
-                              onClick: () {
-
-                              },
+                            SizedBox(height: dimension.sValue(offsetXLg),),
+                            dimension.getStatus() > 1
+                                ? jobCategoryLg(dimension)
+                                : jobCategorySm(dimension),
+                            SizedBox(height: dimension.sValue(offsetXLg),),
+                            talentSupportWidget(dimension),
+                            SizedBox(height: dimension.sValue(offsetBase),),
+                            dimension.getStatus() > 2
+                                ? talentCategoryLg(dimension)
+                                : talentCategorySm(dimension),
+                            SizedBox(height: dimension.sValue(offsetXLg),),
+                            brandSupportWidget(dimension),
+                            SizedBox(height: dimension.sValue(offsetXLg),),
+                            Container(
+                              width: double.infinity,
+                              color: supportColor,
+                              child: Center(child: dimension.getStatus() > 2
+                                  ? customerSupportLg(dimension)
+                                  : customerSupportSm(dimension),
+                              ),
                             ),
                           ],
                         ),
-                        SizedBox(height: dimension.sValue(offsetXLg),),
-                        dimension.getStatus() > 1
-                            ? jobCategoryLg(dimension)
-                            : jobCategorySm(dimension),
-                        SizedBox(height: dimension.sValue(offsetXLg),),
-                        talentSupportWidget(dimension),
-                        SizedBox(height: dimension.sValue(offsetBase),),
-                        dimension.getStatus() > 2
-                            ? talentCategoryLg(dimension)
-                            : talentCategorySm(dimension),
-
-                        SizedBox(height: dimension.sValue(offsetXLg),),
-                      ],
-                    ),
+                      ),
+                      MenuWidget(
+                        isMenu: isMenu,
+                        dimention: dimension,
+                        onExtraEvent: () {
+                          setState(() {
+                            isMenu = !isMenu;
+                          });
+                        },
+                        body: MainMenuWidget(
+                          dimension: dimension,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -129,9 +184,14 @@ class _LandingScreenState extends State<LandingScreen> {
             if (dimension.getStatus() < 4)
               Row(
                 children: [
-                  Icon(
-                    Icons.menu,
-                    size: dimension.sValue(18),
+                  InkWell(
+                    onTap: () {
+                      _onClickMenu();
+                    },
+                    child: Icon(
+                      isMenu? Icons.clear : Icons.menu,
+                      size: dimension.sValue(18),
+                    ),
                   ),
                   SizedBox(
                     width: offsetBase,
@@ -148,16 +208,46 @@ class _LandingScreenState extends State<LandingScreen> {
                   SizedBox(
                     width: dimension.sValue(offsetLg),
                   ),
-                  MenuTitleWidget(
-                    dimension: dimension,
-                    title: 'Find Talent',
+                  DropdownButton<String>(
+                    hint: Text(
+                      'Find Talent',
+                      style: extraTextStyle.copyWith(
+                        fontSize: dimension.sValue(10.0),
+                        color: Colors.black,
+                      ),
+                    ),
+                    underline: SizedBox(),
+                    items: <String>['Talent by Region', 'Talent by Skill', 'Talent by Review'].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: boldTextStyle.copyWith(fontSize: dimension.sValue(8.0)),),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      print(value);
+                    },
                   ),
                   SizedBox(
                     width: dimension.sValue(offsetBase),
                   ),
-                  MenuTitleWidget(
-                    dimension: dimension,
-                    title: 'Find Work',
+                  DropdownButton<String>(
+                    hint: Text(
+                      'Find Word',
+                      style: extraTextStyle.copyWith(
+                        fontSize: dimension.sValue(10.0),
+                        color: Colors.black,
+                      ),
+                    ),
+                    underline: SizedBox(),
+                    items: <String>['Jobs by Region', 'Jobs by Price', 'Jobs by Recent'].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: boldTextStyle.copyWith(fontSize: dimension.sValue(8.0)),),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      print(value);
+                    },
                   ),
                 ],
               ),
@@ -211,24 +301,34 @@ class _LandingScreenState extends State<LandingScreen> {
                   ),
                 ],
               ),
-            Text(
-              'Login',
-              style:
-              extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),
+            InkWell(
+              onTap: () {
+                _onClickWidget('/login');
+              },
+              child: Text(
+                'Login',
+                style:
+                extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),
+              ),
             ),
             SizedBox(
               width: offsetMd,
             ),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: offsetBase, vertical: offsetSm),
-                decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(offsetSm))),
-                child: Text(
-                  'Register',
-                  style: extraTextStyle.copyWith(
-                      fontSize: dimension.sValue(10.0), color: Colors.white),
-                )
+            InkWell(
+              onTap: () {
+                _onClickWidget('/register');
+              },
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: offsetBase, vertical: offsetSm),
+                  decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(offsetSm))),
+                  child: Text(
+                    'Register',
+                    style: extraTextStyle.copyWith(
+                        fontSize: dimension.sValue(10.0), color: Colors.white),
+                  )
+              ),
             ),
           ],
         ),
@@ -271,9 +371,9 @@ class _LandingScreenState extends State<LandingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: dimension.sValue(offsetBase),),
-                Text('The world\'s work \nmarketplace', style: extraTextStyle.copyWith(fontSize: dimension.sValue(18.0), color: Colors.green.withOpacity(0.8)),),
+                Text('The world\'s work \nmarketplace', style: boldTextStyle.copyWith(fontSize: dimension.sValue(18.0), color: Colors.green.withOpacity(0.8)),),
                 SizedBox(height: dimension.sValue(offsetBase),),
-                Text('Engage the largest network of trusted\nindependent professionals to unlock\nthe full potential of your business.', style: boldTextStyle.copyWith(fontSize: dimension.sValue(12.0)),),
+                Text('Engage the largest network of trusted\nindependent professionals to unlock\nthe full potential of your business.', style: mediumTextStyle.copyWith(fontSize: dimension.sValue(12.0)),),
                 SizedBox(height: dimension.sValue(offsetBase),),
                 Row(
                   children: [
@@ -284,7 +384,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         color: primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(offsetSm)),
                       ),
-                      child: Text('Find Talent', style: extraTextStyle.copyWith(fontSize: 12, color: Colors.white),),
+                      child: Text('Visit Tour', style: extraTextStyle.copyWith(fontSize: 12, color: Colors.white),),
                     )),
                     SizedBox(width: dimension.sValue(offsetBase),),
                     Expanded(child: Container(
@@ -304,7 +404,7 @@ class _LandingScreenState extends State<LandingScreen> {
             Expanded(child: Container(
               child: AspectRatio(
                 aspectRatio: 16 / 9,
-                  child: Image.asset('assets/images/img_adv.png', fit: BoxFit.fitWidth,)),
+                  child: Image.asset('assets/images/img_adv.png', fit: BoxFit.fitHeight,)),
             )),
           ],
         ),
@@ -320,7 +420,7 @@ class _LandingScreenState extends State<LandingScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('The world\'s work \nmarketplace', style: extraTextStyle.copyWith(fontSize: dimension.sValue(28.0)),),
+              Text('The world\'s work \nmarketplace', style: extraTextStyle.copyWith(fontSize: dimension.sValue(28.0), color: Colors.green.withOpacity(0.8)),),
               SizedBox(height: dimension.sValue(offsetBase),),
               Text('Engage the largest network of trusted\nindependent professionals to unlock\nthe full potential of your business.', style: boldTextStyle.copyWith(fontSize: dimension.sValue(16.0)),),
               SizedBox(height: dimension.sValue(offsetBase),),
@@ -333,7 +433,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       color: primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(offsetSm)),
                     ),
-                    child: Text('Find Talent', style: mediumTextStyle.copyWith(fontSize: 14, color: Colors.white),),
+                    child: Text('Visit Tour', style: mediumTextStyle.copyWith(fontSize: 14, color: Colors.white),),
                   )),
                   SizedBox(width: dimension.sValue(offsetBase),),
                   Expanded(child: Container(
@@ -352,26 +452,29 @@ class _LandingScreenState extends State<LandingScreen> {
           SizedBox(height: dimension.sValue(offsetMd),),
           AspectRatio(
               aspectRatio: 16 / 9,
-              child: Image.asset('assets/images/img_adv.png', fit: BoxFit.fitWidth,)),
+              child: Image.asset('assets/images/img_adv.png', fit: BoxFit.fitHeight,)),
         ],
       ),
     );
   }
 
   Widget clientSupportWidget(Dimension dimension) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: dimension.sValue(dimension.getStatus() > 1? offsetLg : offsetBase)),
-      child: Column(
-        children: [
-          Text('FOR CLIENT', style: boldTextStyle.copyWith(fontSize: dimension.sValue(12.0), color: Colors.grey),),
-          SizedBox(height: dimension.sValue(offsetMd),),
-          Text('Find talent your way', style: boldTextStyle.copyWith(fontSize: dimension.sValue(22.0), color: Colors.green.withOpacity(0.8)),),
-          SizedBox(height: dimension.sValue(offsetMd),),
-          Text('Develop trusted relationships and build your own virtual talent bench for quick project turnarounds or big transformations.',
-            style: mediumTextStyle.copyWith(fontSize: dimension.sValue(11.0)),
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 1024),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: dimension.sValue(dimension.getStatus() > 1? offsetLg : offsetBase)),
+        child: Column(
+          children: [
+            Text('FOR CLIENT', style: boldTextStyle.copyWith(fontSize: dimension.sValue(12.0), color: Colors.grey),),
+            SizedBox(height: dimension.sValue(offsetMd),),
+            Text('Find talent your way', style: boldTextStyle.copyWith(fontSize: dimension.sValue(22.0), color: Colors.green.withOpacity(0.8)),),
+            SizedBox(height: dimension.sValue(offsetMd),),
+            Text('Develop trusted relationships and build your own virtual talent bench for quick project turnarounds or big transformations.',
+              style: mediumTextStyle.copyWith(fontSize: dimension.sValue(11.0)),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -433,19 +536,6 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
-
-  var airConCategories = [
-    'Types of AC Units',
-    'Central Air Conditioners',
-    'Ductless Air Conditioners',
-    'Mini-Split Air Conditioners',
-    'Window Units',
-    'Portable Units',
-    'Hybrid Air Conditioner',
-    'Geothermal Heating',
-    'Geothermal Cooling',
-  ];
-
   Widget jobCategoryLg(Dimension dimension) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: 1024),
@@ -478,15 +568,7 @@ class _LandingScreenState extends State<LandingScreen> {
             SizedBox(width: dimension.sValue(offsetBase),),
             Expanded(child: Wrap(
               children: [
-                for (var condition in airConCategories) Container(
-                  margin: EdgeInsets.all(offsetXSm),
-                  padding: EdgeInsets.symmetric(horizontal: offsetSm, vertical: offsetXSm),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(offsetSm)),
-                  ),
-                  child: Text(condition, style: mediumTextStyle.copyWith(fontSize: dimension.sValue(10.0)),),
-                ),
+                for (var condition in airConCategories) CategoryCellWidget(dimension: dimension, title: condition),
               ],
             )),
           ],
@@ -523,15 +605,7 @@ class _LandingScreenState extends State<LandingScreen> {
               SizedBox(height: dimension.sValue(offsetBase),),
               Wrap(
                 children: [
-                  for (var condition in airConCategories) Container(
-                    margin: EdgeInsets.all(offsetXSm),
-                    padding: EdgeInsets.symmetric(horizontal: offsetSm, vertical: offsetXSm),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(offsetSm)),
-                    ),
-                    child: Text(condition, style: mediumTextStyle.copyWith(fontSize: dimension.sValue(12.0)),),
-                  ),
+                  for (var condition in airConCategories) CategoryCellWidget(dimension: dimension, title: condition),
                 ],
               )
             ],
@@ -608,6 +682,255 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
+  Widget brandSupportWidget(Dimension dimension) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 1024),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: dimension.sValue(dimension.getStatus() > 2? offsetLg : offsetBase)),
+        child: Column(
+          children: [
+            Text('TOP BRANDS', style: boldTextStyle.copyWith(fontSize: dimension.sValue(12.0), color: Colors.grey),),
+            SizedBox(height: dimension.sValue(offsetBase),),
+            Wrap(
+              children: [
+                  for (var brand in airConBrands) CategoryCellWidget(dimension: dimension, title: brand),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
+  Widget customerSupportLg(Dimension dimension) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 1024),
+      child: Container(
+        padding: EdgeInsets.all(dimension.sValue(offsetBase)),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('COMPANY', style: extraTextStyle.copyWith(fontSize: dimension.sValue(11.0), color: Colors.white),),
+                    SizedBox(height: dimension.sValue(offsetBase),),
+                    for (var support in supportCompany) Column(
+                      children: [
+                        UnderLineHoverText(
+                          dimension: dimension,
+                          title: support,
+                          textColor: Colors.white,
+                          onClick: () {
+                            switch (support) {
+                              case 'Privacy Policy':
+                                _onClickWidget('/privacy_policy');
+                                break;
+                            }
+                          },
+                        ),
+                        SizedBox(height: dimension.sValue(offsetSm),),
+                      ],
+                    ),
+                  ],
+                )),
+                Expanded(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('RESOURCES', style: extraTextStyle.copyWith(fontSize: dimension.sValue(11.0), color: Colors.white),),
+                    SizedBox(height: dimension.sValue(offsetBase),),
+                    for (var support in supportResources) Column(
+                      children: [
+                        UnderLineHoverText(
+                          dimension: dimension,
+                          title: support,
+                          textColor: Colors.white,
+                        ),
+                        SizedBox(height: dimension.sValue(offsetSm),),
+                      ],
+                    ),
+                  ],
+                )),
+                Expanded(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('BROWSE', style: extraTextStyle.copyWith(fontSize: dimension.sValue(11.0), color: Colors.white),),
+                    SizedBox(height: dimension.sValue(offsetBase),),
+                    for (var support in supportBrowse) Column(
+                      children: [
+                        UnderLineHoverText(
+                          dimension: dimension,
+                          title: support,
+                          textColor: Colors.white,
+                        ),
+                        SizedBox(height: dimension.sValue(offsetSm),),
+                      ],
+                    ),
+                  ],
+                )),
+              ],
+            ),
+            SizedBox(height: dimension.sValue(offsetBase),),
+            Container(width: double.infinity, height: 1.0, color: Colors.white.withOpacity(0.1),),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: dimension.sValue(offsetSm)),
+              child: Row(
+                children: [
+                  Text('Follow us', style: extraTextStyle.copyWith(fontSize: dimension.sValue(10.0), color: Colors.white),),
+                  SizedBox(width: dimension.sValue(offsetBase),),
+                  for (var icon in followIcons) Row(
+                    children: [
+                      FollowIconWidget(
+                          iconName: icon,
+                          backgroundColor: Colors.white.withOpacity(0.1),
+                          hoverColor: Colors.white.withOpacity(0.3),
+                      ),
+                      SizedBox(width: dimension.sValue(offsetSm),),
+                    ],
+                  ),
+                  Spacer(),
+                  Text('Mobile apps', style: extraTextStyle.copyWith(fontSize: dimension.sValue(10.0), color: Colors.white),),
+                  SizedBox(width: dimension.sValue(offsetSm),),
+                  for (var icon in platformIcons) Row(
+                    children: [
+                      SizedBox(width: dimension.sValue(offsetSm),),
+                      FollowIconWidget(
+                        iconName: icon,
+                        backgroundColor: Colors.white.withOpacity(0.1),
+                        hoverColor: Colors.white.withOpacity(0.3),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(width: double.infinity, height: 1.0, color: Colors.white.withOpacity(0.1),),
+            SizedBox(height: dimension.sValue(offsetBase),),
+            Text('© 2018 - 2021 Laodev® Global Inc.', style: boldTextStyle.copyWith(fontSize: 12.0, color: Colors.white),),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget customerSupportSm(Dimension dimension) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(dimension.sValue(offsetBase)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('COMPANY', style: extraTextStyle.copyWith(fontSize: dimension.sValue(14.0), color: Colors.white),),
+              SizedBox(height: dimension.sValue(offsetBase),),
+              for (var support in supportCompany) Column(
+                children: [
+                  UnderLineHoverText(
+                    dimension: dimension,
+                    title: support,
+                    textColor: Colors.white,
+                    fontSize: 12.0,
+                    onClick: () {
+                      switch (support) {
+                        case 'Privacy Policy':
+                          _onClickWidget('Privacy Policy');
+                          break;
+                      }
+                    },
+                  ),
+                  SizedBox(height: dimension.sValue(offsetSm),),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: dimension.sValue(offsetBase),),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('RESOURCES', style: extraTextStyle.copyWith(fontSize: dimension.sValue(14.0), color: Colors.white),),
+              SizedBox(height: dimension.sValue(offsetBase),),
+              for (var support in supportResources) Column(
+                children: [
+                  UnderLineHoverText(
+                    dimension: dimension,
+                    title: support,
+                    textColor: Colors.white,
+                    fontSize: 12.0,
+                  ),
+                  SizedBox(height: dimension.sValue(offsetSm),),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: dimension.sValue(offsetBase),),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('BROWSE', style: extraTextStyle.copyWith(fontSize: dimension.sValue(14.0), color: Colors.white),),
+              SizedBox(height: dimension.sValue(offsetBase),),
+              for (var support in supportBrowse) Column(
+                children: [
+                  UnderLineHoverText(
+                    dimension: dimension,
+                    title: support,
+                    textColor: Colors.white,
+                    fontSize: 12.0,
+                  ),
+                  SizedBox(height: dimension.sValue(offsetSm),),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: dimension.sValue(offsetSm),),
+          Container(width: double.infinity, height: 1.0, color: Colors.white.withOpacity(0.1),),
+          SizedBox(height: dimension.sValue(offsetSm),),
+          Row(
+            children: [
+              Text('Follow us', style: extraTextStyle.copyWith(fontSize: dimension.sValue(14.0), color: Colors.white),),
+              SizedBox(width: dimension.sValue(offsetBase),),
+              for (var icon in followIcons) Row(
+                children: [
+                  FollowIconWidget(
+                    iconName: icon,
+                    backgroundColor: Colors.white.withOpacity(0.1),
+                    hoverColor: Colors.white.withOpacity(0.3),
+                  ),
+                  SizedBox(width: dimension.sValue(offsetSm),),
+                ],
+              ),
+            ]
+          ),
+          SizedBox(height: dimension.sValue(offsetBase),),
+          Row(
+              children: [
+                Text('Mobile apps', style: extraTextStyle.copyWith(fontSize: dimension.sValue(14.0), color: Colors.white),),
+                SizedBox(width: dimension.sValue(offsetBase),),
+                for (var icon in platformIcons) Row(
+                  children: [
+                    FollowIconWidget(
+                      iconName: icon,
+                      backgroundColor: Colors.white.withOpacity(0.1),
+                      hoverColor: Colors.white.withOpacity(0.3),
+                    ),
+                    SizedBox(width: dimension.sValue(offsetSm),),
+                  ],
+                ),
+              ]
+          ),
+          SizedBox(height: dimension.sValue(offsetSm),),
+          Container(width: double.infinity, height: 1.0, color: Colors.white.withOpacity(0.1),),
+          SizedBox(height: dimension.sValue(offsetBase),),
+          Container(
+            alignment: Alignment.center,
+              child: Text(siteInformation, style: boldTextStyle.copyWith(fontSize: 12.0, color: Colors.white),)
+          ),
+        ],
+      ),
+    );
+  }
 
 }

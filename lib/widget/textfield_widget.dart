@@ -1,3 +1,4 @@
+import 'package:aircondition/util/dimens.dart';
 import 'package:aircondition/util/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -51,5 +52,55 @@ class NoneTextFieldWidget extends TextField {
       errorStyle: mediumTextStyle.copyWith(fontSize: fontSize, color: Colors.red),
     ),
   );
+}
 
+class OutlineTextField extends TextField {
+  final bool isReadOnly;
+  final bool isDisable;
+  final TextEditingController controller;
+  final String label;
+  final String hint;
+  final double fontSize;
+  final Widget prefixIcon;
+  final Widget sufficIcon;
+  final TextInputType keyboardType;
+  final Function(String) onEnterTrigger;
+  final String errorText;
+  final bool isPassword;
+
+  OutlineTextField({
+    Key key,
+    this.isReadOnly = false,
+    this.isDisable = false,
+    this.controller,
+    this.label,
+    this.hint,
+    this.fontSize,
+    this.prefixIcon,
+    this.sufficIcon,
+    this.keyboardType,
+    this.onEnterTrigger,
+    this.errorText,
+    this.isPassword = false,
+  }) : super(
+    key: key,
+    controller: controller,
+    keyboardType: keyboardType,
+    textInputAction: onEnterTrigger != null? TextInputAction.go : null,
+    obscureText: isPassword,
+    readOnly: isReadOnly,
+    decoration: InputDecoration(
+      enabled: !isDisable,
+      labelText: label,
+      labelStyle: mediumTextStyle.copyWith(fontSize: fontSize),
+      hintText: hint,
+      hintStyle: mediumTextStyle.copyWith(fontSize: fontSize),
+      contentPadding: EdgeInsets.symmetric(horizontal: offsetBase),
+      prefixIcon: prefixIcon,
+      suffixIcon: sufficIcon,
+      border: OutlineInputBorder(),
+      errorText: errorText,
+      errorStyle: mediumTextStyle.copyWith(fontSize: fontSize, color: Colors.red),
+    ),
+  );
 }
