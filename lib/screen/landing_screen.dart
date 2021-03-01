@@ -1,7 +1,8 @@
+import 'package:aircondition/model/router_model.dart';
 import 'package:aircondition/util/colors.dart';
+import 'package:aircondition/util/constants.dart';
 import 'package:aircondition/widget/category_widget.dart';
 import 'package:aircondition/widget/icon_widget.dart';
-import 'package:aircondition/widget/menu_title_widget.dart';
 import 'package:aircondition/util/dimens.dart';
 import 'package:aircondition/util/themes.dart';
 import 'package:aircondition/widget/menu_widget.dart';
@@ -9,7 +10,6 @@ import 'package:aircondition/widget/text_widget.dart';
 import 'package:aircondition/widget/textfield_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class LandingScreen extends StatefulWidget {
   @override
@@ -23,60 +23,6 @@ class _LandingScreenState extends State<LandingScreen> {
   var searchController = TextEditingController();
 
   var isMenu = false;
-
-  var airConCategories = [
-    'Types of AC Units',
-    'Central Air Conditioners',
-    'Ductless Air Conditioners',
-    'Mini-Split Air Conditioners',
-    'Window Units',
-    'Portable Units',
-    'Hybrid Air Conditioner',
-    'Geothermal Heating',
-    'Geothermal Cooling',
-  ];
-
-  var airConBrands = [
-    'American Standard',
-    'Carrier',
-    'Goodman Central',
-    'Trane Central AC Units',
-    'Rheem',
-    'Lennox HVAC Units',
-    'York AC Units',
-    'Ruud Central',
-    'Amana HVAC Systems',
-    'HEIL',
-    'Bryant',
-  ];
-
-  var supportCompany = [
-    'About Us',
-    'Investor Relations',
-    'Careers',
-    'Trust, Safety & Security',
-    'Terms of Service',
-    'Privacy Policy',
-    'Accessibility'
-  ];
-
-  var supportResources = [
-    'Resources',
-    'Customer Support',
-    'Customer Stories',
-    'Business Resources',
-    'Payroll Services',
-    'Service Reviews',
-  ];
-
-  var supportBrowse = [
-    'Talent by Skill',
-    'Talent by Region',
-    'Product by Price',
-    'Product by Brand',
-    'Product by Region',
-    'Find Works',
-  ];
 
   var followIcons = [
     'assets/icons/ic_wechat.svg',
@@ -101,6 +47,14 @@ class _LandingScreenState extends State<LandingScreen> {
     setState(() {
       isMenu = !isMenu;
     });
+  }
+
+  void _onClickWidget(String value) {
+    if (value == routerPrivacyPolicy.routerName) {
+      Navigator.pushNamed(context, value);
+    } else {
+      Navigator.pushReplacementNamed(context, value);
+    }
   }
 
   @override
@@ -204,9 +158,8 @@ class _LandingScreenState extends State<LandingScreen> {
                             isMenu = !isMenu;
                           });
                         },
-                        body: Container(
-                          padding: EdgeInsets.all(dimension.sValue(offsetBase)),
-                          child: Column(),
+                        body: MainMenuWidget(
+                          dimension: dimension,
                         ),
                       ),
                     ],
@@ -255,16 +208,46 @@ class _LandingScreenState extends State<LandingScreen> {
                   SizedBox(
                     width: dimension.sValue(offsetLg),
                   ),
-                  MenuTitleWidget(
-                    dimension: dimension,
-                    title: 'Find Talent',
+                  DropdownButton<String>(
+                    hint: Text(
+                      'Find Talent',
+                      style: extraTextStyle.copyWith(
+                        fontSize: dimension.sValue(10.0),
+                        color: Colors.black,
+                      ),
+                    ),
+                    underline: SizedBox(),
+                    items: <String>['Talent by Region', 'Talent by Skill', 'Talent by Review'].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: boldTextStyle.copyWith(fontSize: dimension.sValue(8.0)),),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      print(value);
+                    },
                   ),
                   SizedBox(
                     width: dimension.sValue(offsetBase),
                   ),
-                  MenuTitleWidget(
-                    dimension: dimension,
-                    title: 'Find Work',
+                  DropdownButton<String>(
+                    hint: Text(
+                      'Find Word',
+                      style: extraTextStyle.copyWith(
+                        fontSize: dimension.sValue(10.0),
+                        color: Colors.black,
+                      ),
+                    ),
+                    underline: SizedBox(),
+                    items: <String>['Jobs by Region', 'Jobs by Price', 'Jobs by Recent'].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: boldTextStyle.copyWith(fontSize: dimension.sValue(8.0)),),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      print(value);
+                    },
                   ),
                 ],
               ),
@@ -318,24 +301,34 @@ class _LandingScreenState extends State<LandingScreen> {
                   ),
                 ],
               ),
-            Text(
-              'Login',
-              style:
-              extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),
+            InkWell(
+              onTap: () {
+                _onClickWidget('/login');
+              },
+              child: Text(
+                'Login',
+                style:
+                extraTextStyle.copyWith(fontSize: dimension.sValue(10.0)),
+              ),
             ),
             SizedBox(
               width: offsetMd,
             ),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: offsetBase, vertical: offsetSm),
-                decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(offsetSm))),
-                child: Text(
-                  'Register',
-                  style: extraTextStyle.copyWith(
-                      fontSize: dimension.sValue(10.0), color: Colors.white),
-                )
+            InkWell(
+              onTap: () {
+                _onClickWidget('/register');
+              },
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: offsetBase, vertical: offsetSm),
+                  decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(offsetSm))),
+                  child: Text(
+                    'Register',
+                    style: extraTextStyle.copyWith(
+                        fontSize: dimension.sValue(10.0), color: Colors.white),
+                  )
+              ),
             ),
           ],
         ),
@@ -391,7 +384,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         color: primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(offsetSm)),
                       ),
-                      child: Text('Find Talent', style: extraTextStyle.copyWith(fontSize: 12, color: Colors.white),),
+                      child: Text('Visit Tour', style: extraTextStyle.copyWith(fontSize: 12, color: Colors.white),),
                     )),
                     SizedBox(width: dimension.sValue(offsetBase),),
                     Expanded(child: Container(
@@ -440,7 +433,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       color: primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(offsetSm)),
                     ),
-                    child: Text('Find Talent', style: mediumTextStyle.copyWith(fontSize: 14, color: Colors.white),),
+                    child: Text('Visit Tour', style: mediumTextStyle.copyWith(fontSize: 14, color: Colors.white),),
                   )),
                   SizedBox(width: dimension.sValue(offsetBase),),
                   Expanded(child: Container(
@@ -730,6 +723,13 @@ class _LandingScreenState extends State<LandingScreen> {
                           dimension: dimension,
                           title: support,
                           textColor: Colors.white,
+                          onClick: () {
+                            switch (support) {
+                              case 'Privacy Policy':
+                                _onClickWidget('/privacy_policy');
+                                break;
+                            }
+                          },
                         ),
                         SizedBox(height: dimension.sValue(offsetSm),),
                       ],
@@ -834,6 +834,13 @@ class _LandingScreenState extends State<LandingScreen> {
                     title: support,
                     textColor: Colors.white,
                     fontSize: 12.0,
+                    onClick: () {
+                      switch (support) {
+                        case 'Privacy Policy':
+                          _onClickWidget('Privacy Policy');
+                          break;
+                      }
+                    },
                   ),
                   SizedBox(height: dimension.sValue(offsetSm),),
                 ],
@@ -919,7 +926,7 @@ class _LandingScreenState extends State<LandingScreen> {
           SizedBox(height: dimension.sValue(offsetBase),),
           Container(
             alignment: Alignment.center,
-              child: Text('© 2018 - 2021 Laodev® Global Inc.', style: boldTextStyle.copyWith(fontSize: 12.0, color: Colors.white),)
+              child: Text(siteInformation, style: boldTextStyle.copyWith(fontSize: 12.0, color: Colors.white),)
           ),
         ],
       ),

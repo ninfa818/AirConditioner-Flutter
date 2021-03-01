@@ -12,6 +12,7 @@ class Assets {
   static const String iconsIcAndroid = 'assets/icons/ic_android.svg';
   static const String iconsIcApple = 'assets/icons/ic_apple.svg';
   static const String iconsIcFacebook = 'assets/icons/ic_facebook.svg';
+  static const String iconsIcGoogle = 'assets/icons/ic_google.svg';
   static const String iconsIcInstagram = 'assets/icons/ic_instagram.svg';
   static const String iconsIcTwitter = 'assets/icons/ic_twitter.svg';
   static const String iconsIcWechat = 'assets/icons/ic_wechat.svg';
