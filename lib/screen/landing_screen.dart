@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:aircondition/model/router_model.dart';
+import 'package:aircondition/service/dialog_service.dart';
+import 'package:aircondition/service/network_service.dart';
 import 'package:aircondition/util/colors.dart';
 import 'package:aircondition/util/constants.dart';
+import 'package:aircondition/util/params.dart';
 import 'package:aircondition/widget/category_widget.dart';
 import 'package:aircondition/widget/icon_widget.dart';
 import 'package:aircondition/util/dimens.dart';
@@ -41,6 +46,23 @@ class _LandingScreenState extends State<LandingScreen> {
     super.initState();
 
     isTalentHover = false;
+    Timer.run(() {
+      initData();
+    });
+
+  }
+
+  void initData() async {
+    var resp = await NetworkService(context).ajax('air_check_status', null, isProgress: true);
+    if (resp['ret'] == 10000) {
+      var result = resp['result'];
+      isProductMode = result['mode'] as String;
+      if (isProductMode == '0') {
+        DialogService(context).showSnackbar('该应用程序现在正在测试模式下工作。', _scaffoldKey);
+      }
+    } else {
+      return;
+    }
   }
 
   void _onClickMenu() {

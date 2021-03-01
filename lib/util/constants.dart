@@ -1,5 +1,5 @@
 
-const server_url = 'https://rule.laodev.info/';
+const server_url = 'https://airbackend.laodev.info/';
 
 var menuData = [
   {

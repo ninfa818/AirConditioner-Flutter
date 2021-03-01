@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:aircondition/util/constants.dart';
+import 'package:aircondition/service/load_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import 'load_service.dart';
 
 class NetworkService {
   BuildContext context;
@@ -22,7 +21,14 @@ class NetworkService {
     print('===== response params ===== \n${parameter.toString()}');
 
     if (isProgress) LoadService().showLoading(context);
-    final response = await http.post((isFullUrl? '' : backend_url) + link,
+    final response = await http.post(
+      (isFullUrl? '' : backend_url) + link,
+      headers: {
+        "Access-Control-Allow-Origin": "https://airbackend.laodev.info", // Required for CORS support to work
+        "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
+        "Cache-Control": "no-store,no-cache,must-revalidate",
+        'Content-Type': "application/x-www-form-urlencoded,multipart/form-data,text/plain",
+      },
       body: parameter,
     ).timeout(Duration(minutes: 1));
     if (isProgress) LoadService().hideLoading(context);
