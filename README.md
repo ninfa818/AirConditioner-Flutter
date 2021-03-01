@@ -14,3 +14,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+// Run flutter command
+/Volumes/Data/Android/flutter/bin/flutter
+
+// 8111 port server command
+/Volumes/Data/Android/flutter/bin/flutter run -d chrome --web-hostname localhost --web-port 8111

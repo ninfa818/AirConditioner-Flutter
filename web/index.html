@@ -21,6 +21,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="aircondition">
+
+  <meta name="google-signin-client_id" content="639888235377-qg956fo7ve4atu37h1csvs3ipgjh0gen.apps.googleusercontent.com" />
+
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
@@ -40,6 +43,27 @@
       });
     }
   </script>
+
+  <!-- The core Firebase JS SDK (always required for using any firebase service) -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+  <!-- Firebase Auth SDK -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+  <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyADmNkJsEijOGJ1Cddl4IfNE1khDLyJwhQ",
+        authDomain: "aircondition-ca65c.firebaseapp.com",
+        projectId: "aircondition-ca65c",
+        storageBucket: "aircondition-ca65c.appspot.com",
+        messagingSenderId: "639888235377",
+        appId: "1:639888235377:web:426db9bfc95049d20b74d0",
+        measurementId: "G-LJEN5RWV1F"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig)
+    </script>
+  <!-- END OF FIREBASE INIT CODE -->
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
