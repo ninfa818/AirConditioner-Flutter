@@ -1,5 +1,6 @@
 
 const server_url = 'https://airbackend.laodev.info/';
+// const server_url = 'http://54.36.110.237/';
 
 var menuData = [
   {

@@ -24,10 +24,9 @@ class NetworkService {
     final response = await http.post(
       (isFullUrl? '' : backend_url) + link,
       headers: {
-        "Access-Control-Allow-Origin": "https://airbackend.laodev.info", // Required for CORS support to work
+        "Access-Control-Allow-Origin": '*',
         "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
-        "Cache-Control": "no-store,no-cache,must-revalidate",
-        'Content-Type': "application/x-www-form-urlencoded,multipart/form-data,text/plain",
+        'Access-Control-Allow-Headers' : 'Content-Type',
       },
       body: parameter,
     ).timeout(Duration(minutes: 1));
